@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'; // Import useSelector and useDispatch
+import { useDispatch, useSelector } from 'react-redux';
 import Login from './login';
 import Register from './register';
 import { logoutUser } from '../actions/authActions';
-import { Nav, Button } from 'react-bootstrap';
+import { Nav, Button, Alert } from 'react-bootstrap';
 
 const Authentication = () => {
   const [activeTab, setActiveTab] = useState('login');
+  const [error, setError] = useState(null); // For error messages
   const dispatch = useDispatch(); 
 
   // Retrieve Redux state values
@@ -33,8 +34,12 @@ const Authentication = () => {
           <Nav.Link eventKey="register">Register</Nav.Link>
         </Nav.Item>
       </Nav>
+      
       {/* Conditionally render based on the active tab */}
-      {activeTab === 'register' ? <Register /> : <Login />}
+      {activeTab === 'register' ? <Register setError={setError} /> : <Login setError={setError} />}
+      
+      {/* Display error if there is one */}
+      {error && <Alert variant="danger">{error}</Alert>}
     </div>
   );
 
